@@ -1,0 +1,178 @@
+openapi: '3.0.0'
+info:
+  version: '1.0.0'
+  title: Book management system
+  description: simple book mangement system api
+servers: 
+  - url: http://localhost:8000
+paths:
+  /getbooks:
+    get:
+      summary: get books from the book management
+      tags:
+       - book
+      description: get books from the book management
+      responses:
+        "200":
+          description: get book successfully
+          content:
+           application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/book'
+        "400":
+          description: book data not get succeffully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+  /postbooks:
+    post:
+      summary: to post book from the book management
+      tags:
+      - book
+      description: post the book into book management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/book'
+      responses:
+        "200":
+          description: book successfully added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/book'
+        "400":
+          description: book data not added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+  /getbooks/{id}:
+    get:
+      summary: Get a specific book from the book management
+      tags:
+      - book
+      description: Get a specific book from the book management by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the book
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Get book successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/book'
+        "400":
+          description: book data not added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /putbooks/{id}:
+    put:
+      summary: to update the book from book management
+      tags:
+      - book
+      description:  to update the book from book management
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the book
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/book'
+      responses:
+        "200":
+          description: Book updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/book'
+        "400":
+          description: book data not added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+  /delete/{id}:
+    delete:
+      summary: Delete a book from the book management
+      tags:
+        - book
+      description: Delete a book from the book management by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the book
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Book deleted successfully
+          content:
+           application/json:
+              schema:
+                $ref: '#/components/schemas/book'
+        "400":
+          description: book data not added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+components:
+  securitySchemes:
+    bearerAuth: 
+      type: http
+      scheme: bearer
+  schemas:
+    Response:
+      type: object
+      description:  ResponseInStatusCode
+      properties:
+        code: 
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      required: 
+        - message
+    book:
+      type: object
+      properties:
+        id: 
+          type: string
+        name:
+          type: string
+        author:
+          type: string
+        branch:
+          type: string
+        isExist:
+          type: boolean
+      required:
+        - id
+        - name
+        - author
+        - branch
+    
